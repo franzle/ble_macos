@@ -70,7 +70,7 @@ class BleController extends GetxController {
 // Start scanning w/ timeout
 // Optional: use `stopScan()` as an alternative to timeout
     await FlutterBluePlus.startScan(
-        withNames: ["Ars_Camper"], // *or* any of the specified names
+        withKeywords: ["Ars Camper"], // *or* any of the specified names
         timeout: Duration(seconds: 15));
 
 // wait for scanning to stop
@@ -167,10 +167,11 @@ class BleController extends GetxController {
   }
 
   Future<void> toggleLed() async {
-    Guid myCuuid = Guid("00001525-1212-efde-1523-785feabcd123");
-    Guid mySuuid = Guid("00001523-1212-efde-1523-785feabcd123");
+    Guid myCuuid = Guid("40c01011-38c3-4e61-adad-2575d248f0f6");
+    
+    Guid mySuuid = Guid("40c01010-38c3-4e61-adad-2575d248f0f6");
     DeviceIdentifier myDid =
-        DeviceIdentifier("5DA034FB-79E5-0013-CEDC-38C49BE51467");
+        DeviceIdentifier("BD657A58-7839-ADA7-D9BE-7874466864B9");
 
     try {
       BluetoothCharacteristic characteristic = BluetoothCharacteristic(
