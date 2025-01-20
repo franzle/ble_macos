@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:ble_macos/ble_controller.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
@@ -26,12 +28,13 @@ class MyApp extends StatelessWidget {
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
-
   @override
   State<MyHomePage> createState() => _MyHomePageState();
+  
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  BluetoothDevice myDevice = BluetoothDevice(remoteId:DeviceIdentifier(""));
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,6 +58,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                 itemCount: snapshot.data!.length,
                                 itemBuilder: (context, index) {
                                   final data = snapshot.data![index];
+                                  myDevice = data.device;
                                   return Card(
                                     elevation: 2,
                                     child: ListTile(
@@ -91,6 +95,12 @@ class _MyHomePageState extends State<MyHomePage> {
                             // await controller.disconnectDevice();
                           },
                           child: Text("Toggle")),
+                      ElevatedButton(
+                          onPressed: () async {
+                            controller.disconnectDevice(myDevice);
+                            // await controller.disconnectDevice();
+                          },
+                          child: Text("Disconnect")),
                     ],
                   ),
                 ],

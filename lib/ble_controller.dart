@@ -129,14 +129,16 @@ class BleController extends GetxController {
 // Connect to the device
     await device.connect();
 
+// Discover the services of the device
+    discoverServices(device);
+
+// cancel to prevent duplicate listeners
+    subscription.cancel();
   }
 
   Future<void> disconnectDevice(BluetoothDevice device) async {
 // Disconnect from device
     await device.disconnect();
-
-// cancel to prevent duplicate listeners
-    subscription.cancel();
   }
 
   Future<void> discoverServices(BluetoothDevice device) async {
@@ -170,13 +172,19 @@ class BleController extends GetxController {
     DeviceIdentifier myDid =
         DeviceIdentifier("5DA034FB-79E5-0013-CEDC-38C49BE51467");
 
-    BluetoothCharacteristic characteristic = BluetoothCharacteristic(
-        remoteId: myDid, serviceUuid: mySuuid, characteristicUuid: myCuuid);
-    List<int> value = await characteristic.read();
-    if (value[0] == 0) {
-      await characteristic.write([0x01]);
-    } else {
-      await characteristic.write([0x00]);
+    try {
+      BluetoothCharacteristic characteristic = BluetoothCharacteristic(
+          remoteId: myDid, serviceUuid: mySuuid, characteristicUuid: myCuuid);
+      List<int> value = await characteristic.read();
+      if (value[0] == 0) {
+        await characteristic.write([0x01]);
+      } else {
+        await characteristic.write([0x00]);
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print("Error connecting to device: $e");
+      }
     }
   }
 }
